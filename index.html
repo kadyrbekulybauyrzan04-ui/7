@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>«Сәттілік коды» — Психологиялық ахуал тренингі</title>
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-dark: #3730a3;
+            --accent: #10b981;
+            --bg-gradient: linear-gradient(135deg, #0f172a, #1e1b4b, #311042);
+            --card-bg: rgba(255, 255, 255, 0.07);
+            --text-color: #f8fafc;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-gradient);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 750px;
+            width: 100%;
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 24px;
+            padding: 35px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 5px;
+            color: #38bdf8;
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            color: #94a3b8;
+            margin-bottom: 25px;
+        }
+
+        .step-box {
+            background: rgba(0, 0, 0, 0.25);
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-left: 5px solid #38bdf8;
+            text-align: left;
+            min-height: 140px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .step-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #fbbf24;
+            margin-bottom: 10px;
+        }
+
+        .step-content {
+            font-size: 1.15rem;
+            line-height: 1.6;
+        }
+
+        /* Codes grid */
+        .codes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        .code-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 12px 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+        }
+
+        .code-card:hover, .code-card.active {
+            background: rgba(16, 185, 129, 0.2);
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .code-num {
+            font-weight: bold;
+            color: #34d399;
+            margin-right: 8px;
+        }
+
+        .formula-box {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #f43f5e;
+            background: rgba(244, 63, 94, 0.1);
+            border: 2px dashed #f43f5e;
+            padding: 15px;
+            border-radius: 12px;
+            letter-spacing: 1px;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+
+        button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.4);
+        }
+
+        button:hover {
+            background: var(--primary-dark);
+            transform: scale(1.03);
+        }
+
+        button:disabled {
+            background: #475569;
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
+        }
+
+        .progress-dots {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transition: 0.3s;
+        }
+
+        .dot.active {
+            background: #38bdf8;
+            transform: scale(1.2);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>✨ Сәттілік коды ✨</h1>
+        <div class="subtitle">Психологиялық ахуал тренингі (Сабақтың басы • 3–5 минут)</div>
+
+        <!-- Progress Dots -->
+        <div class="progress-dots" id="dotsContainer">
+            <div class="dot active"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+
+        <!-- Main Dynamic Step Box -->
+        <div class="step-box" id="stepBox">
+            <!-- Content injected via JavaScript -->
+        </div>
+
+        <!-- Navigation Controls -->
+        <div class="controls">
+            <button id="prevBtn" onclick="prevStep()" disabled>⬅️ Артқа</button>
+            <button id="nextBtn" onclick="nextStep()">Келесі ➡️</button>
+        </div>
+    </div>
+
+    <script>
+        const steps = [
+            {
+                title: "1. Мұғалімнің кіріспе сөзі",
+                content: `«Қайырлы күн, оқушылар! Бүгінгі сабағымызды ерекше көңіл күймен бастайық. Әрқайсымыздың бойымызда жетістікке жетелейтін ерекше код бар. Ол – сенім, талап, білім және табандылық. Ендеше, бүгінгі сабақтың сәттілік кодын бірге құрастырайық!»`
+            },
+            {
+                title: "2. «Сәттілік кодын құрастыр» ойыны",
+                content: `Оқушылар төмендегі кодтарды дауыстап оқып, жағымды қасиеттерді таңдайды:<br>
+                <div class="codes-grid">
+                    <div class="code-card" onclick="toggleCard(this)"><span class="code-num">01</span>Мен өзіме сенемін!</div>
+                    <div class="code-card" onclick="toggleCard(this)"><span class="code-num">02</span>Мен білім алуға дайынмын!</div>
+                    <div class="code-card" onclick="toggleCard(this)"><span class="code-num">03</span>Мен белсенді боламын!</div>
+                    <div class="code-card" onclick="toggleCard(this)"><span class="code-num">04</span>Мен қателесуден қорықпаймын!</div>
+                    <div class="code-card" onclick="toggleCard(this)"><span class="code-num">05</span>Мен жетістікке жетемін!</div>
+                </div>`
+            },
+            {
+                title: "3. «Менің бүгінгі кодым» тапсырмасы",
+                content: `Әр оқушы өзіне ұнаған бір кодты таңдап, сөйлемді іштей не дауыстап аяқтайды:<br>
+                • Мен бүгін <b>[таңдаған ісіңіз]</b> үйренемін.<br>
+                • Мен бүгін сабаққа <b>[белсенділік деңгейі]</b> қатысамын.<br>
+                • Мен бүгін міндетті түрде жетістікке жетемін!`
+            },
+            {
+                title: "4. Барлығымыз бірге!",
+                content: `<div style="text-align: center;">
+                    <div style="font-size: 1.1rem; color: #38bdf8; margin-bottom: 15px;">БҮГІНГІ СӘТТІЛІК КОДЫ:</div>
+                    <div class="formula-box">БІЛІМ + СЕНІМ + ЕҢБЕК = ЖЕТІСТІК!</div>
+                    <div style="margin-top: 15px; font-style: italic; color: #cbd5e1; font-size: 1rem;">
+                        «Біз ақылдымыз! Біз талаптымыз! Біз бәрін үйрене аламыз! Сабақ сәтті өтсін!»
+                    </div>
+                </div>`
+            },
+            {
+                title: "5. Мұғалімнің қорытынды сөзі",
+                content: `«Жарайсыңдар! Бүгінгі сабақта әрқайсың өз мүмкіндіктеріңді көрсетіп, жаңа білімді меңгеруге дайын екендеріңді білдірдіңдер. Ендеше, сәттілік кодын іске қосып, сабағымызды бастайық!»`
+            }
+        ];
+
+        let currentStep = 0;
+
+        function updateView() {
+            const stepBox = document.getElementById("stepBox");
+            stepBox.innerHTML = `
+                <div class="step-title">${steps[currentStep].title}</div>
+                <div class="step-content">${steps[currentStep].content}</div>
+            `;
+
+            // Update buttons
+            document.getElementById("prevBtn").disabled = currentStep === 0;
+            const nextBtn = document.getElementById("nextBtn");
+            if (currentStep === steps.length - 1) {
+                nextBtn.innerText = "Басынан бастау 🔄";
+            } else {
+                nextBtn.innerText = "Келесі ➡️";
+            }
+
+            // Update dots
+            const dots = document.querySelectorAll(".dot");
+            dots.forEach((dot, index) => {
+                dot.classList.toggle("active", index === currentStep);
+            });
+        }
+
+        function nextStep() {
+            if (currentStep < steps.length - 1) {
+                currentStep++;
+            } else {
+                currentStep = 0; // Loop back
+            }
+            updateView();
+        }
+
+        function prevStep() {
+            if (currentStep > 0) {
+                currentStep--;
+                updateView();
+            }
+        }
+
+        function toggleCard(card) {
+            card.classList.toggle("active");
+        }
+
+        // Initialize
+        updateView();
+    </script>
+
+</body>
+</html>
